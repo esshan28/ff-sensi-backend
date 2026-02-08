@@ -7,7 +7,7 @@ app.use(cors());
 app.use(express.json());
 
 // Database Connection (Make sure MongoDB Compass is running)
-mongoose.connect(Process.env.MONGO_URI)
+mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log("Database Connected Successfully!"))
     .catch(err => console.log("DB Connection Error: ", err));
 
@@ -48,4 +48,5 @@ app.get('/api/check-status/:utr', async (req, res) => {
     res.json({ status: data ? data.status : 'not_found' });
 });
 
-app.listen(5000, () => console.log("Backend running on http://localhost:5000"));
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));
