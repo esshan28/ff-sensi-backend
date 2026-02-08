@@ -7,7 +7,7 @@ app.use(cors());
 app.use(express.json());
 
 // Database Connection (Make sure MongoDB Compass is running)
-mongoose.connect('mongodb://127.0.0.1:27017/ff_sensi')
+mongoose.connect(Process.env.MONGO_URI)
     .then(() => console.log("Database Connected Successfully!"))
     .catch(err => console.log("DB Connection Error: ", err));
 
