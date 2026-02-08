@@ -95,7 +95,7 @@
         if(utr.length < 10 || name === "") { alert("Enter Name & UTR!"); return; }
 
         try {
-            const res = await fetch('https://ff-sensi-backend.onrender.com', {
+           const res = await fetch('https://ff-sensi-backend.onrender.com/api/request-access', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({ name, utr, device })
@@ -107,7 +107,7 @@
                 document.getElementById('subBtn').style.display = "none";
                 
                 const checkStatus = setInterval(async () => {
-                    const statusRes = await fetch(`https://ff-sensi-backend.onrender.com/${utr}`);
+                    const statusRes = await fetch('https://ff-sensi-backend.onrender.com/api/check-status/${utr}');
                     const data = await statusRes.json();
                     if(data.status === 'approved') {
                         clearInterval(checkStatus);
