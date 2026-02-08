@@ -1,289 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FF SENSI STORE | OFFICIAL</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FF SENSI STORE | OFFICIAL</title>
+    <style>
+        :root { --main: #00f2ff; --bg: #080808; --card: #121214; --success: #00ff88; }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg); color: white; margin: 0; padding: 10px; }
+        .container { max-width: 420px; margin: 15px auto; background: var(--card); padding: 20px; border-radius: 25px; border: 1px solid #222; box-shadow: 0 10px 30px rgba(0, 242, 255, 0.1); text-align: center; }
+        h1 { font-size: 24px; color: var(--main); text-transform: uppercase; margin: 0; letter-spacing: 1px; }
+        .owner { color: #666; font-size: 10px; margin-bottom: 20px; display: block; }
 
-<style>
-:root{
-    --main:#00f2ff;
-    --bg:#030405;
-    --card:#0b0f12;
-    --success:#00ff88;
-}
+        #successBanner { display: none; background: var(--success); color: black; padding: 8px; border-radius: 8px; font-size: 12px; margin-bottom: 15px; font-weight: bold; }
 
-*{box-sizing:border-box}
+        .sensi-box { position: relative; background: #000; border-radius: 15px; padding: 15px; border: 1px solid #333; min-height: 280px; margin-bottom: 15px; }
+        .content { filter: blur(15px); opacity: 0.1; transition: 0.8s; pointer-events: none; }
+        .unlocked { filter: blur(0) !important; opacity: 1 !important; pointer-events: all !important; }
 
-body{
-    margin:0;
-    min-height:100vh;
-    font-family:Poppins,system-ui;
-    background:
-      radial-gradient(circle at top,#0b2a2f 0%,#030405 55%);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:#fff;
-}
+        .item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #111; }
+        .item span { color: #888; font-size: 13px; }
+        .item b { color: #fff; font-size: 18px; }
 
-/* MAIN CARD */
-.container{
-    width:100%;
-    max-width:420px;
-    padding:22px;
-}
+        #paymentBox { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 99; background: rgba(10, 10, 12, 0.98); border-radius: 15px; padding: 15px; box-sizing: border-box; }
+        .qr-img { width: 140px; background: white; padding: 8px; border-radius: 10px; border: 3px solid var(--main); margin-bottom: 5px; }
+        .pay-to { color: var(--success); font-size: 13px; font-weight: bold; margin-bottom: 10px; }
 
-.card{
-    background:linear-gradient(180deg,#0b0f12,#050607);
-    border-radius:28px;
-    padding:26px;
-    border:1px solid rgba(0,242,255,.22);
-    box-shadow:
-      0 0 0 1px rgba(255,255,255,.04),
-      0 40px 90px rgba(0,242,255,.25);
-    position:relative;
-    overflow:hidden;
-}
+        input, select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #1a1a1c; color: white; font-size: 14px; margin-top: 8px; box-sizing: border-box; outline: none; }
+        .verify-btn { background: var(--main); color: #000; border: none; padding: 14px; border-radius: 8px; width: 100%; font-weight: bold; margin-top: 15px; cursor: pointer; text-transform: uppercase; }
 
-h1{
-    margin:0;
-    text-align:center;
-    font-size:22px;
-    color:var(--main);
-    letter-spacing:1px;
-}
+        #waitMsg { color: #ffcc00; font-size: 11px; margin-top: 10px; display: none; font-weight: bold; }
 
-.owner{
-    display:block;
-    text-align:center;
-    font-size:10px;
-    color:#777;
-    margin-bottom:18px;
-}
-
-/* SUCCESS */
-#successBanner{
-    display:none;
-    background:linear-gradient(90deg,#00ff88,#00f2ff);
-    color:#000;
-    padding:10px;
-    border-radius:14px;
-    text-align:center;
-    font-size:12px;
-    font-weight:800;
-    margin-bottom:14px;
-}
-
-/* PAYMENT BOX */
-#paymentBox{
-    background:#050709;
-    border-radius:22px;
-    padding:24px;
-    border:1px solid rgba(255,255,255,.06);
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:12px;
-}
-
-/* QR */
-.qr-img{
-    width:155px;
-    padding:10px;
-    background:#fff;
-    border-radius:18px;
-    box-shadow:0 14px 45px rgba(0,242,255,.45);
-}
-
-.pay-to{
-    color:#00ffcc;
-    font-size:12px;
-    font-weight:700;
-}
-
-.secure{
-    font-size:10px;
-    color:#888;
-    margin-bottom:6px;
-}
-
-/* INPUTS */
-input,select{
-    width:100%;
-    padding:14px;
-    border-radius:14px;
-    background:#0e1114;
-    border:1px solid rgba(255,255,255,.08);
-    color:#fff;
-    font-size:14px;
-    outline:none;
-}
-
-input::placeholder{color:#666}
-
-/* BUTTON */
-.verify-btn{
-    width:100%;
-    padding:16px;
-    margin-top:8px;
-    border-radius:16px;
-    font-weight:900;
-    letter-spacing:1px;
-    background:linear-gradient(90deg,#00f2ff,#00ffcc);
-    color:#000;
-    border:none;
-    cursor:pointer;
-    box-shadow:0 14px 45px rgba(0,242,255,.55);
-}
-
-#waitMsg{
-    display:none;
-    font-size:11px;
-    color:#ffcc00;
-    font-weight:700;
-}
-
-/* SENSI DATA */
-.sensi{
-    margin-top:18px;
-    filter:blur(18px);
-    opacity:.12;
-    pointer-events:none;
-    transition:.8s ease;
-}
-
-.sensi.unlocked{
-    filter:none;
-    opacity:1;
-    pointer-events:auto;
-}
-
-.item{
-    display:flex;
-    justify-content:space-between;
-    padding:10px 0;
-    border-bottom:1px solid #111;
-}
-
-.item span{font-size:12px;color:#888}
-.item b{font-size:18px}
-
-/* GIFT */
-#secretGift{
-    display:none;
-    margin-top:14px;
-    padding:14px;
-    background:#0e1114;
-    border-radius:16px;
-    border:1px dashed var(--main);
-}
-
-.gift-header{
-    font-size:13px;
-    font-weight:800;
-    color:#ffcc00;
-}
-
-.gift-content{
-    font-size:11px;
-    color:#ccc;
-    margin-top:4px;
-    line-height:1.5;
-}
-</style>
+        /* Gift Section */
+        #secretGift { margin-top: 15px; background: #1a1a1c; border: 1px dashed var(--main); padding: 12px; border-radius: 12px; display: none; text-align: left; }
+        .gift-header { color: #ffcc00; font-size: 13px; font-weight: bold; margin-bottom: 5px; display: block; }
+        .gift-content { font-size: 11px; color: #ccc; line-height: 1.5; }
+    </style>
 </head>
-
 <body>
 
 <div class="container">
-<div class="card">
+    <h1>FF SENSI STORE</h1>
+    <span class="owner">Official Store: Esshan Khatri</span>
+    
+    <div id="successBanner">✅ VERIFIED ACCESS: <span id="buyerName"></span></div>
 
-<h1>FF SENSI STORE</h1>
-<span class="owner">Official Store • Esshan Khatri</span>
+    <div class="sensi-box">
+        <div id="paymentBox">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi://pay?pa=esshan74khatri@okicici&pn=Esshan%20Khatri&am=99" class="qr-img">
+            <div class="pay-to">Payee: Esshan Khatri</div>
+            <input type="text" id="custName" placeholder="Full Name">
+            <input type="text" id="utr" placeholder="12-Digit UTR Number">
+            <button class="verify-btn" id="subBtn" onclick="requestAccess()">Unlock Now</button>
+            <p id="waitMsg">⏳ Verifying Payment... Access will open automatically.</p>
+        </div>
 
-<div id="successBanner">✅ VERIFIED ACCESS — <span id="buyerName"></span></div>
+        <div id="mainSensi" class="content">
+            <div class="item"><span>General</span><b id="g">--</b></div>
+            <div class="item"><span>Red Dot</span><b id="r">--</b></div>
+            <div class="item"><span>2x Scope</span><b id="s2">--</b></div>
+            <div class="item"><span>4x Scope</span><b id="s4">--</b></div>
+            <div class="item"><span>Sniper</span><b id="sn">--</b></div>
+            <div class="item" style="border:none; color:var(--main)"><span>DPI / Fire</span><b id="df">--</b></div>
+            
+            <div id="secretGift">
+                <span class="gift-header" id="giftTitle">🎁 PRO TWEAKS</span>
+                <div class="gift-content" id="giftDetails"></div>
+            </div>
+        </div>
+    </div>
 
-<!-- PAYMENT -->
-<div id="paymentBox">
-<img class="qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=esshan74khatri@okicici&pn=Esshan%20Khatri&am=99">
-
-<div class="pay-to">Payee: Esshan Khatri</div>
-<div class="secure">Secure UPI • Auto Verification</div>
-
-<input id="custName" placeholder="Full Name">
-<input id="utr" placeholder="12-Digit UTR">
-
-<select id="deviceSelect">
-<option value="ios">iPhone 15 Pro / 15 Pro Max</option>
-<option value="ios">iPhone 14 Pro / 14 Pro Max</option>
-<option value="and_h">Samsung S24 Ultra / ROG 8</option>
-<option value="and_h">OnePlus 12 / iQOO 12</option>
-<option value="and_l">Redmi / POCO / Realme (6–8GB)</option>
-</select>
-
-<button class="verify-btn" onclick="unlock()">UNLOCK NOW</button>
-<p id="waitMsg">⏳ Verifying payment…</p>
-</div>
-
-<!-- SENSI -->
-<div class="sensi" id="sensiBox">
-<div class="item"><span>General</span><b id="g">—</b></div>
-<div class="item"><span>Red Dot</span><b id="r">—</b></div>
-<div class="item"><span>2× Scope</span><b id="s2">—</b></div>
-<div class="item"><span>4× Scope</span><b id="s4">—</b></div>
-<div class="item"><span>Sniper</span><b id="sn">—</b></div>
-<div class="item" style="border:none"><span>DPI / Fire</span><b id="df">—</b></div>
-
-<div id="secretGift">
-<div class="gift-header" id="giftTitle"></div>
-<div class="gift-content" id="giftDetails"></div>
-</div>
-</div>
-
-</div>
+    <div id="deviceContainer">
+        <select id="deviceSelect">
+            <optgroup label="Apple iOS">
+                <option value="ios">iPhone 17/16/15 Pro Max</option>
+                <option value="ios">iPhone 14/13/12 Pro</option>
+            </optgroup>
+            <optgroup label="Android Gaming (8GB+)">
+                <option value="and_h">iQOO 12 / ROG 8 / S24 Ultra</option>
+                <option value="and_h">OnePlus 12 / Nothing 2</option>
+            </optgroup>
+            <optgroup label="Android Budget (6GB)">
+                <option value="and_l">POCO / Redmi / Vivo / Moto</option>
+            </optgroup>
+        </select>
+    </div>
 </div>
 
 <script>
-function unlock(){
-    const name=document.getElementById("custName").value;
-    const device=document.getElementById("deviceSelect").value;
+    async function requestAccess() {
+        const utr = document.getElementById('utr').value;
+        const name = document.getElementById('custName').value;
+        const device = document.getElementById('deviceSelect').value;
 
-    if(!name){alert("Enter name");return;}
+        if(utr.length < 10 || name === "") { alert("Enter Name & UTR!"); return; }
 
-    document.getElementById("paymentBox").style.display="none";
-    document.getElementById("successBanner").style.display="block";
-    document.getElementById("buyerName").innerText=name.toUpperCase();
+        try {
+           const res = await fetch('https://ff-sensi-backend.onrender.com/api/request-access', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ name, utr, device })
+            });
 
-    const box=document.getElementById("sensiBox");
-    box.classList.add("unlocked");
-    document.getElementById("secretGift").style.display="block";
-
-    if(device==="ios"){
-        setVals(140,128,118,110,84,"120 / 32%");
-        setGift("🍎 iOS PRO AIM","• Touch: Ultra<br>• Aim Assist: Stable<br>• Frame Lock: ON");
-    }else if(device==="and_h"){
-        setVals(170,165,148,140,92,"Standard / 34%");
-        setGift("🚀 FLAGSHIP BOOST","• 4× MSAA ON<br>• Touch: Ultra<br>• Lag Shield Active");
-    }else{
-        setVals(182,180,176,170,100,"600 DPI / 30%");
-        setGift("⚡ BUDGET BOOST","• Anim Scale 0.5×<br>• HW Overlay OFF<br>• DPI 600");
+            if(res.ok) {
+                document.getElementById('deviceContainer').style.display = "none";
+                document.getElementById('waitMsg').style.display = "block";
+                document.getElementById('subBtn').style.display = "none";
+                
+                const checkStatus = setInterval(async () => {
+                    const statusRes = await fetch(`https://ff-sensi-backend.onrender.com/api/check-status/${utr}`);
+                    const data = await statusRes.json();
+                    if(data.status === 'approved') {
+                        clearInterval(checkStatus);
+                        document.getElementById('buyerName').innerText = name.toUpperCase();
+                        document.getElementById('successBanner').style.display = "block";
+                        unlockSensi(device);
+                    }
+                }, 4000);
+            }
+        } catch (err) { alert("Start 'node server.js' first!"); }
     }
-}
 
-function setVals(a,b,c,d,e,f){
-    g.innerText=a;
-    r.innerText=b;
-    s2.innerText=c;
-    s4.innerText=d;
-    sn.innerText=e;
-    df.innerText=f;
-}
-function setGift(t,d){
-    giftTitle.innerText=t;
-    giftDetails.innerHTML=d;
-}
+    function unlockSensi(type) {
+        document.getElementById('paymentBox').style.display = "none";
+        document.getElementById('mainSensi').classList.add('unlocked');
+        document.getElementById('secretGift').style.display = "block";
+
+        if(type === 'ios') {
+            setVals(138, 125, 115, 108, 82, "120 Selection / 32%");
+            setGift("🎁 iOS SECRET HACK", "• Loops: 10<br>• Cursor: 120<br>• Ignore Repeat: 0.10s");
+        } else if(type === 'and_h') {
+            setVals(168, 162, 145, 138, 90, "Standard / 34%");
+            setGift("🚀 FLAGSHIP BOOSTER", "• 4x MSAA: On<br>• Logger: Off<br>• Touch: Ultra");
+        } else {
+            setVals(180, 180, 175, 170, 98, "600 DPI / 30%");
+            setGift("⚡ BUDGET SPEED HACK", "• Anim: .5x<br>• HW Overlay: Off<br>• DPI: 600");
+        }
+    }
+
+    function setVals(g,r,s2,s4,sn,df) {
+        document.getElementById('g').innerText = g; document.getElementById('r').innerText = r;
+        document.getElementById('s2').innerText = s2; document.getElementById('s4').innerText = s4;
+        document.getElementById('sn').innerText = sn; document.getElementById('df').innerText = df;
+    }
+
+    function setGift(title, desc) {
+        document.getElementById('giftTitle').innerText = title;
+        document.getElementById('giftDetails').innerHTML = desc;
+    }
 </script>
-
 </body>
 </html>
