@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FF SENSI STORE | OFFICIAL</title>
+    <style>
+        :root { --main: #00f2ff; --bg: #080808; --card: #121214; --success: #00ff88; }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg); color: white; margin: 0; padding: 10px; }
+        .container { max-width: 420px; margin: 15px auto; background: var(--card); padding: 20px; border-radius: 25px; border: 1px solid #222; box-shadow: 0 10px 30px rgba(0, 242, 255, 0.1); text-align: center; }
+        h1 { font-size: 24px; color: var(--main); text-transform: uppercase; margin: 0; letter-spacing: 1px; }
+        .owner { color: #666; font-size: 10px; margin-bottom: 20px; display: block; }
+
+        #successBanner { display: none; background: var(--success); color: black; padding: 8px; border-radius: 8px; font-size: 12px; margin-bottom: 15px; font-weight: bold; }
+
+        .sensi-box { position: relative; background: #000; border-radius: 15px; padding: 15px; border: 1px solid #333; min-height: 280px; margin-bottom: 15px; }
+        .content { filter: blur(15px); opacity: 0.1; transition: 0.8s; pointer-events: none; }
+        .unlocked { filter: blur(0) !important; opacity: 1 !important; pointer-events: all !important; }
+
+        .item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #111; }
+        .item span { color: #888; font-size: 13px; }
+        .item b { color: #fff; font-size: 18px; }
+
+        #paymentBox { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 99; background: rgba(10, 10, 12, 0.98); border-radius: 15px; padding: 15px; box-sizing: border-box; }
+        .qr-img { width: 140px; background: white; padding: 8px; border-radius: 10px; border: 3px solid var(--main); margin-bottom: 5px; }
+        .pay-to { color: var(--success); font-size: 13px; font-weight: bold; margin-bottom: 10px; }
+
+        input, select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #333; background: #1a1a1c; color: white; font-size: 14px; margin-top: 8px; box-sizing: border-box; outline: none; }
+        .verify-btn { background: var(--main); color: #000; border: none; padding: 14px; border-radius: 8px; width: 100%; font-weight: bold; margin-top: 15px; cursor: pointer; text-transform: uppercase; }
+
+        #waitMsg { color: #ffcc00; font-size: 11px; margin-top: 10px; display: none; font-weight: bold; }
+
+        /* Gift Section */
+        #secretGift { margin-top: 15px; background: #1a1a1c; border: 1px dashed var(--main); padding: 12px; border-radius: 12px; display: none; text-align: left; }
+        .gift-header { color: #ffcc00; font-size: 13px; font-weight: bold; margin-bottom: 5px; display: block; }
+        .gift-content { font-size: 11px; color: #ccc; line-height: 1.5; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>FF SENSI STORE</h1>
+    <span class="owner">Official Store: Esshan Khatri</span>
+    
+    <div id="successBanner">✅ VERIFIED ACCESS: <span id="buyerName"></span></div>
+
+    <div class="sensi-box">
+        <div id="paymentBox">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi://pay?pa=esshan74khatri@okicici&pn=Esshan%20Khatri&am=99" class="qr-img">
+            <div class="pay-to">Payee: Esshan Khatri</div>
+            <input type="text" id="custName" placeholder="Full Name">
+            <input type="text" id="utr" placeholder="12-Digit UTR Number">
+            <button class="verify-btn" id="subBtn" onclick="requestAccess()">Unlock Now</button>
+            <p id="waitMsg">⏳ Verifying Payment... Access will open automatically.</p>
+        </div>
+
+        <div id="mainSensi" class="content">
+            <div class="item"><span>General</span><b id="g">--</b></div>
+            <div class="item"><span>Red Dot</span><b id="r">--</b></div>
+            <div class="item"><span>2x Scope</span><b id="s2">--</b></div>
+            <div class="item"><span>4x Scope</span><b id="s4">--</b></div>
+            <div class="item"><span>Sniper</span><b id="sn">--</b></div>
+            <div class="item" style="border:none; color:var(--main)"><span>DPI / Fire</span><b id="df">--</b></div>
+            
+            <div id="secretGift">
+                <span class="gift-header" id="giftTitle">🎁 PRO TWEAKS</span>
+                <div class="gift-content" id="giftDetails"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="deviceContainer">
+        <select id="deviceSelect">
+            <optgroup label="Apple iOS">
+                <option value="ios">iPhone 17/16/15 Pro Max</option>
+                <option value="ios">iPhone 14/13/12 Pro</option>
+            </optgroup>
+            <optgroup label="Android Gaming (8GB+)">
+                <option value="and_h">iQOO 12 / ROG 8 / S24 Ultra</option>
+                <option value="and_h">OnePlus 12 / Nothing 2</option>
+            </optgroup>
+            <optgroup label="Android Budget (6GB)">
+                <option value="and_l">POCO / Redmi / Vivo / Moto</option>
+            </optgroup>
+        </select>
+    </div>
+</div>
+
+<script>
+    async function requestAccess() {
+        const utr = document.getElementById('utr').value;
+        const name = document.getElementById('custName').value;
+        const device = document.getElementById('deviceSelect').value;
+
+        if(utr.length < 10 || name === "") { alert("Enter Name & UTR!"); return; }
+
+        try {
+            const res = await fetch('https://ff-sensi-backend.onrender.com', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ name, utr, device })
+            });
+
+            if(res.ok) {
+                document.getElementById('deviceContainer').style.display = "none";
+                document.getElementById('waitMsg').style.display = "block";
+                document.getElementById('subBtn').style.display = "none";
+                
+                const checkStatus = setInterval(async () => {
+                    const statusRes = await fetch(`https://ff-sensi-backend.onrender.com/${utr}`);
+                    const data = await statusRes.json();
+                    if(data.status === 'approved') {
+                        clearInterval(checkStatus);
+                        document.getElementById('buyerName').innerText = name.toUpperCase();
+                        document.getElementById('successBanner').style.display = "block";
+                        unlockSensi(device);
+                    }
+                }, 4000);
+            }
+        } catch (err) { alert("Start 'node server.js' first!"); }
+    }
+
+    function unlockSensi(type) {
+        document.getElementById('paymentBox').style.display = "none";
+        document.getElementById('mainSensi').classList.add('unlocked');
+        document.getElementById('secretGift').style.display = "block";
+
+        if(type === 'ios') {
+            setVals(138, 125, 115, 108, 82, "120 Selection / 32%");
+            setGift("🎁 iOS SECRET HACK", "• Loops: 10<br>• Cursor: 120<br>• Ignore Repeat: 0.10s");
+        } else if(type === 'and_h') {
+            setVals(168, 162, 145, 138, 90, "Standard / 34%");
+            setGift("🚀 FLAGSHIP BOOSTER", "• 4x MSAA: On<br>• Logger: Off<br>• Touch: Ultra");
+        } else {
+            setVals(180, 180, 175, 170, 98, "600 DPI / 30%");
+            setGift("⚡ BUDGET SPEED HACK", "• Anim: .5x<br>• HW Overlay: Off<br>• DPI: 600");
+        }
+    }
+
+    function setVals(g,r,s2,s4,sn,df) {
+        document.getElementById('g').innerText = g; document.getElementById('r').innerText = r;
+        document.getElementById('s2').innerText = s2; document.getElementById('s4').innerText = s4;
+        document.getElementById('sn').innerText = sn; document.getElementById('df').innerText = df;
+    }
+
+    function setGift(title, desc) {
+        document.getElementById('giftTitle').innerText = title;
+        document.getElementById('giftDetails').innerHTML = desc;
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sensi Store | ADMIN PANEL</title>
+    <style>
+        :root { --neon: #00f2ff; --bg: #0a0a0b; --card: #161618; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: white; padding: 20px; }
+        .container { max-width: 600px; margin: auto; }
+        
+        h1 { color: var(--neon); border-bottom: 2px solid var(--neon); padding-bottom: 10px; text-transform: uppercase; }
+        .status-bar { font-size: 12px; color: #888; margin-bottom: 20px; }
+
+        .request-card { 
+            background: var(--card); 
+            padding: 20px; 
+            border-radius: 12px; 
+            margin-bottom: 15px; 
+            border: 1px solid #333; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .info b { color: var(--neon); font-size: 18px; display: block; }
+        .info span { color: #888; font-size: 13px; }
+        .info i { color: #ffcc00; font-style: normal; font-size: 13px; }
+
+        .btn-approve { 
+            background: #00ff88; 
+            color: black; 
+            border: none; 
+            padding: 12px 20px; 
+            border-radius: 8px; 
+            font-weight: bold; 
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .btn-approve:hover { transform: scale(1.05); background: #00cc6e; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .no-data { text-align: center; color: #444; margin-top: 50px; font-style: italic; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Pending Approvals</h1>
+    <div class="status-bar" id="connStatus">Checking server connection...</div>
+
+    <div id="requestList">
+        <div class="no-data">Scanning for new payments...</div>
+    </div>
+</div>
+
+<script>
+    const API_URL = "https://ff-sensi-backend.onrender.com";
+
+    // 1. Fetch All Pending Requests
+    async function loadRequests() {
+        try {
+            const res = await fetch(`${API_URL}/admin/requests`);
+            if (!res.ok) throw new Error("Server Response Error");
+            
+            const data = await res.json();
+            document.getElementById('connStatus').innerText = "✅ Server Connected | Auto-Refreshing";
+            document.getElementById('connStatus').style.color = "#00ff88";
+
+            const list = document.getElementById('requestList');
+            if (data.length === 0) {
+                list.innerHTML = '<div class="no-data">No pending requests found.</div>';
+                return;
+            }
+
+            list.innerHTML = "";
+            data.forEach(req => {
+                list.innerHTML += `
+                    <div class="card request-card">
+                        <div class="info">
+                            <b>${req.name}</b>
+                            <span>Device: ${req.device}</span>
+                            <i>UTR: ${req.utr}</i>
+                        </div>
+                        <button class="btn-approve" onclick="approve('${req.utr}')">APPROVE</button>
+                    </div>`;
+            });
+        } catch (err) {
+            document.getElementById('connStatus').innerText = "❌ SERVER OFFLINE! Please start 'node server.js'";
+            document.getElementById('connStatus').style.color = "#ff4444";
+        }
+    }
+
+    // 2. Approve Payment
+    async function approve(utr) {
+        try {
+            const res = await fetch(`${API_URL}/admin/approve`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ utr: utr })
+            });
+
+            if (res.ok) {
+                alert("Sensi Unlocked Successfully!");
+                loadRequests(); // Refresh list
+            }
+        } catch (err) {
+            alert("Error approving request.");
+        }
+    }
+
+    // Auto-refresh every 5 seconds
+    setInterval(loadRequests, 5000);
+    loadRequests();
+</script>
+
+</body>
+</html>
