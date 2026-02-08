@@ -114,6 +114,13 @@
     // Auto-refresh every 5 seconds
     setInterval(loadRequests, 5000);
     loadRequests();
+    // Admin page ke top par ye script rakhein
+const password = prompt("Admin Access Ke Liye Password Dalein:");
+
+if (password !== "esshanffsensi") {
+    alert("Wrong Password! Wapis jaao.");
+    window.location.href = "index.html"; // Galat password par home page bhej dega
+}
 </script>
 
 </body>
