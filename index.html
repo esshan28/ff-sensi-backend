@@ -107,7 +107,7 @@
                 document.getElementById('subBtn').style.display = "none";
                 
                 const checkStatus = setInterval(async () => {
-                    const statusRes = await fetch('https://ff-sensi-backend.onrender.com/api/check-status/${utr}');
+                    const statusRes = await fetch(`https://ff-sensi-backend.onrender.com/api/check-status/${utr}`);
                     const data = await statusRes.json();
                     if(data.status === 'approved') {
                         clearInterval(checkStatus);

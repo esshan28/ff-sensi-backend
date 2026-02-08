@@ -8,6 +8,7 @@ app.use(express.json());
 
 // Database Connection (Make sure MongoDB Compass is running)
 mongoose.connect(process.env.MONGO_URI)
+
     .then(() => console.log("Database Connected Successfully!"))
     .catch(err => console.log("DB Connection Error: ", err));
 
